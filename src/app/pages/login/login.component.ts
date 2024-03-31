@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Usuario } from '../../models/usuario';
 import { LoginService } from '../../servicios/login.service';
 import { Router } from '@angular/router';
@@ -7,24 +7,24 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [FormsModule,ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
 
-  fomrulario:FormGroup;
+  formulario:FormGroup;
   mensajeError:string = '';
 
   constructor( private builder:FormBuilder, private loginSvc:LoginService, private router:Router){
-    this.fomrulario = builder.group({
+    this.formulario = builder.group({
       username:[''],
       password:['']
     });
   }
 
   public enviarDatos(){
-    const credenciales  = this.fomrulario.value;
+    const credenciales  = this.formulario.value;
     console.log( credenciales );
     this.loginSvc.login(credenciales).subscribe({
       next: datos => this.procesarRespuesta(datos, credenciales),
@@ -34,7 +34,7 @@ export class LoginComponent {
   }
 
   public procesarRespuesta(datos:any, usuario:Usuario): void{
-    this.router.navigateByUrl('/catalogo');
+    this.router.navigateByUrl('/src/app/pages/pacientes');
   }
 
 }
